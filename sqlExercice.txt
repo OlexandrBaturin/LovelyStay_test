@@ -1,0 +1,67 @@
+CREATE TEMPORARY TABLE apartment
+( apt_id  BIGSERIAL PRIMARY KEY
+, apt_address TEXT
+, city text
+, number_of_rooms SMALLINT
+);
+
+INSERT INTO apartment
+( apt_address, city, number_of_rooms)
+VALUES
+( 'Rua da Prata, n.4', 'Lisboa', 3),
+( 'Rua Invicta, n.5', 'Porto', 1);
+
+CREATE TEMPORARY TABLE booking
+( booking_id BIGSERIAL PRIMARY KEY
+, apt_id_ref BIGINT REFERENCES apartment(apt_id)
+, check_in DATE NOT NULL
+, number_of_guests SMALLINT
+, amount REAL DEFAULT 0
+, cleaning_fee REAL DEFAULT 40
+);
+
+INSERT INTO booking
+( apt_id_ref, check_in, number_of_guests, amount)
+VALUES
+( (SELECT apt_id FROM apartment WHERE number_of_rooms = 3), '2018-04-01', 5, 130),
+( (SELECT apt_id FROM apartment WHERE city = 'Porto'), '2018-04-01', 2, 200),
+( (SELECT apt_id FROM apartment WHERE number_of_rooms > 2 ), '2018-04-01', 3, 230),
+( (SELECT apt_id FROM apartment WHERE apt_address = 'Rua Invicta, n.5' ), '2018-04-01', 5, 230);
+
+
+
+
+select *
+from booking
+where amount > 205
+
+select sum(amount)
+from booking
+where amount > 205
+
+select booking_id, amount, sum(amount) OVER (order by booking_id)
+from booking
+
+insert into apartment (city, number_of_rooms)
+values ('Porto', 2)
+
+insert into booking
+( apt_id_ref, check_in)
+values
+ ((select apt_id from apartment where number_of_rooms = 2), '2018-05-01')
+
+
+select apt_id_ref, AVG(amount), sum(number_of_guests)
+from booking
+group by apt_id_ref
+
+select date_trunc('month', check_in), AVG(amount), sum(number_of_guests)
+from booking
+group by date_trunc('month', check_in)
+
+
+
+
+
+
+
