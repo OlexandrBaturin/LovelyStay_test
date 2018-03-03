@@ -30,34 +30,41 @@ VALUES
 
 
 
+For the aligns 4, 5 and 6 for the values that you do not mention I assumed default values.
 
-select *
-from booking
-where amount > 205
+1.
+SELECT *
+FROM booking
+WHERE amount > 205
 
-select sum(amount)
-from booking
-where amount > 205
+2.
+SELECT SUM(amount)
+FROM booking
+WHERE amount > 205
 
-select booking_id, amount, sum(amount) OVER (order by booking_id)
-from booking
+3.
+SELECT booking_id, amount, SUM(amount) OVER (ORDER BY booking_id)
+FROM booking
 
-insert into apartment (city, number_of_rooms)
-values ('Porto', 2)
+4.
+INSERT INTO apartment (city, number_of_rooms)
+VALUES ('Porto', 2)
 
-insert into booking
+5.
+INSERT INTO booking
 ( apt_id_ref, check_in)
-values
- ((select apt_id from apartment where number_of_rooms = 2), '2018-05-01')
+VALUES
+ ((SELECT apt_id FROM apartment WHERE number_of_rooms = 2), '2018-05-01')
 
+6.
+SELECT apt_id_ref, AVG(amount), SUM(number_of_guests)
+FROM booking
+GROUP BY apt_id_ref
 
-select apt_id_ref, AVG(amount), sum(number_of_guests)
-from booking
-group by apt_id_ref
-
-select date_trunc('month', check_in), AVG(amount), sum(number_of_guests)
-from booking
-group by date_trunc('month', check_in)
+7.
+SELECT date_trunc('month', check_in), AVG(amount), SUM(number_of_guests)
+FROM booking
+GROUP BY date_trunc('month', check_in)
 
 
 
