@@ -32,31 +32,31 @@ VALUES
 
 For the aligns 4, 5 and 6 for the values that you do not mention I assumed default values.
 
-1.
+1. Write a query that returns all bookings above 205 €
 SELECT *
 FROM booking
 WHERE amount > 205
 
-2.
+2. Write a query that returns the sum of all bookings above 205 €
 SELECT SUM(amount)
 FROM booking
 WHERE amount > 205
 
-3.
+3. Write a query that gives the incremental total for each booking (booking 1: 130, booking 2: 330€, etc)
 SELECT booking_id, amount, SUM(amount) OVER (ORDER BY booking_id)
 FROM booking
 
-4.
+4. Insert a second apartment in Porto (with 2 rooms), and a new booking on that apartment on day 2018-05-01
 INSERT INTO apartment (city, number_of_rooms)
 VALUES ('Porto', 2)
 
-5.
+5. Write a query that shows the average revenue, and number of guests per apartment
 INSERT INTO booking
 ( apt_id_ref, check_in)
 VALUES
  ((SELECT apt_id FROM apartment WHERE number_of_rooms = 2), '2018-05-01')
 
-6.
+6. Write a query that shows the average revenue, and number of guests per month
 SELECT apt_id_ref, AVG(amount), SUM(number_of_guests)
 FROM booking
 GROUP BY apt_id_ref
